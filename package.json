@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,11 @@
   "bugs": {
     "url": "https://github.com/hisume/cryptostats/issues"
   },
-  "homepage": "https://github.com/hisume/cryptostats#readme"
+  "homepage": "https://github.com/hisume/cryptostats#readme",
+  "dependencies": {
+    "aws-sdk": "^2.89.0",
+    "node-schedule": "^1.2.3",
+    "request": "^2.81.0",
+    "request-promise": "^4.2.1"
+  }
 }

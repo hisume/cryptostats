@@ -1,35 +1,38 @@
-const express = require('express')  
-const rp = require('request-promise')  
-const exphbs = require('express-handlebars')
+
+const request = require('request-promise')  
 const path = require('path');
+const scheduler = require('node-schedule');
 
-const app = express()
+function getCurrency(currencyPair) {
 
-app.engine('.hbs', exphbs({  
-  defaultLayout: 'main',
-  extname: '.hbs',
-  layoutsDir: path.join(__dirname, 'views/layouts')
-}))
-app.set('view engine', '.hbs')  
-app.set('views', path.join(__dirname, 'views'))
-
-app.get('/:city', (req, res) => {  
-  rp({
-    uri: 'http://apidev.accuweather.com/locations/v1/search',
+  const options= {
+    method: 'GET',
+    uri: 'https://api.coinbase.com/v2/prices/'+currencyPair+'/spot',
     qs: {
-      q: req.params.city,
-      apiKey: 'api-key'
-         // Use your accuweather API key here
+      currency: 'usd'
     },
-    json: true
-  })
-    .then((data) => {
-      res.render('index', data)
-    })
-    .catch((err) => {
-      console.log(err)
-      res.render('error')
-    })
-})
+    headers: {
+      'user-agent': 'request',
+      'CB-VERSION': '2017-07-21'
+    }
+  }
 
-app.listen(3000)  
+  request(options)  
+    .then(function (response) {
+      console.log((JSON.parse(response)).data.amount);
+      return Number(JSON.parse(response).data.amount);
+      
+    })
+    .catch(function (err) {
+      console.log(err);
+    })
+}
+
+
+var j= scheduler.scheduleJob("* * * * *", () => {
+  console.log((new Date).toLocaleString());
+  getCurrency('BTC-USD');
+  getCurrency('ETH-USD');
+  getCurrency('LTC-USD');
+})
+console.log("jobs scheduled");
