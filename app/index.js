@@ -2,6 +2,7 @@
 const request = require('request-promise')  
 const path = require('path');
 const scheduler = require('node-schedule');
+const db = require('./dbaccess')
 
 function getCurrency(currencyPair) {
 
@@ -28,11 +29,32 @@ function getCurrency(currencyPair) {
     })
 }
 
+//add volotility
+function createDBInsertJSON (tableName, date) {
+  return {
+    TableName: tableName,
+    Item: {
+      time: date.toLocaleString(),
+      eth: {
+        price: Number(getCurrency('ETH-USD'))
+      },
+      btc: {
+        price: Number(getCurrency('BTC-USD'))
+      },
+      ltc: {
+        price: Number(getCurrency('LTC-USD'))
+      }
+    }
+  }
+}
 
 var j= scheduler.scheduleJob("* * * * *", () => {
-  console.log((new Date).toLocaleString());
-  getCurrency('BTC-USD');
-  getCurrency('ETH-USD');
-  getCurrency('LTC-USD');
+  var date = new Date();
+  console.log(date.toLocaleString());
+  var json= createDBInsertJSON("Music",date)
+
+  //getCurrency('BTC-USD');
+ // getCurrency('ETH-USD');
+ // getCurrency('LTC-USD');
 })
 console.log("jobs scheduled");
