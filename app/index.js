@@ -46,7 +46,7 @@ function createInsertJSON (tableName, ISODate, currencyPair, value ) {
 var j= scheduler.scheduleJob("* * * * *", () => {
 var dTemp= new Date();
 var ISODate = new Date((dTemp).getTime() - (dTemp.getTimezoneOffset() * 60000)).toISOString();
-  console.log(ISODate.toLocaleString());
+  console.log(dtemp.toLocaleString());
   processCurrency('BTC-USD', ISODate)
   processCurrency('ETH-USD', ISODate)
   processCurrency('LTC-USD', ISODate)
