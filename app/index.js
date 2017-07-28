@@ -3,8 +3,9 @@ const request = require('request-promise')
 const path = require('path');
 const scheduler = require('node-schedule');
 const db = require('./dbaccess')
+const tableName="cryptoDB"
 
-function getCurrency(currencyPair) {
+function processCurrency(currencyPair, ISODate) {
 
   const options= {
     method: 'GET',
@@ -20,8 +21,9 @@ function getCurrency(currencyPair) {
 
   request(options)  
     .then(function (response) {
-      console.log((JSON.parse(response)).data.amount);
-      return Number(JSON.parse(response).data.amount);
+      console.log(currencyPair + " "+(JSON.parse(response)).data.amount);
+      let j = createInsertJSON(tableName,ISODate, currencyPair, Number(JSON.parse(response).data.amount));
+      db.addKeyToTable(j);
       
     })
     .catch(function (err) {
@@ -29,32 +31,27 @@ function getCurrency(currencyPair) {
     })
 }
 
-//add volotility
-function createDBInsertJSON (tableName, date) {
+//add volatility
+function createInsertJSON (tableName, ISODate, currencyPair, value ) {
   return {
     TableName: tableName,
     Item: {
-      time: date.toLocaleString(),
-      eth: {
-        price: Number(getCurrency('ETH-USD'))
-      },
-      btc: {
-        price: Number(getCurrency('BTC-USD'))
-      },
-      ltc: {
-        price: Number(getCurrency('LTC-USD'))
-      }
-    }
+      currencyPair: currencyPair,
+      time: ISODate,
+      value: value
+    },
+    ReturnConsumedCapacity: "TOTAL"
   }
 }
 
 var j= scheduler.scheduleJob("* * * * *", () => {
-  var date = new Date();
-  console.log(date.toLocaleString());
-  var json= createDBInsertJSON("Music",date)
+var dTemp= new Date();
+var ISODate = new Date((dTemp).getTime() - (dTemp.getTimezoneOffset() * 60000)).toISOString();
+  console.log(ISODate.toLocaleString());
+  processCurrency('BTC-USD', ISODate)
+  processCurrency('ETH-USD', ISODate)
+  processCurrency('LTC-USD', ISODate)
 
-  //getCurrency('BTC-USD');
- // getCurrency('ETH-USD');
- // getCurrency('LTC-USD');
 })
+
 console.log("jobs scheduled");
