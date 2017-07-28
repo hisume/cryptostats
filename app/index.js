@@ -39,8 +39,7 @@ function createInsertJSON (tableName, ISODate, currencyPair, value ) {
       currencyPair: currencyPair,
       time: ISODate,
       value: value
-    },
-    ReturnConsumedCapacity: "TOTAL"
+    }
   }
 }
 
