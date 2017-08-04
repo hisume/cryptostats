@@ -5,7 +5,7 @@ const scheduler = require('node-schedule');
 const db = require('./dbaccess')
 const tableName="cryptoDB"
 
-function processCurrency(currencyPair, ISODate) {
+function processNewCurrencyPoint(currencyPair, ISODate) {
 
   const options= {
     method: 'GET',
@@ -47,9 +47,9 @@ var j= scheduler.scheduleJob("* * * * *", () => {
 var dTemp= new Date();
 var ISODate = new Date((dTemp).getTime() - (dTemp.getTimezoneOffset() * 60000)).toISOString();
   console.log(dTemp.toLocaleString());
-  processCurrency('BTC-USD', ISODate)
-  processCurrency('ETH-USD', ISODate)
-  processCurrency('LTC-USD', ISODate)
+  processNewCurrencyPoint('BTC-USD', ISODate)
+  processNewCurrencyPoint('ETH-USD', ISODate)
+  processNewCurrencyPoint('LTC-USD', ISODate)
 
 })
 

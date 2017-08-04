@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "tdev": "node app/dbaccess.js",
+    "test": "node app/test.js",
     "start": "node index.js"
   },
   "repository": {
