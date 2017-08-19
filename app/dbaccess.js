@@ -38,13 +38,6 @@ module.exports = {
                 return null
             }       
             else {      
-                /*
-                var file = fs.createWriteStream('test.txt');
-                data.Items.forEach((v)=> {
-                    file.write(JSON.stringify(v)+"\n")
-                });
-                file.end();
-                */
                 callBack(data);
             }
         });
@@ -53,14 +46,3 @@ module.exports = {
 
 };
 
-/*
-        docClient.query(params, (err, data)=> {
-            if (err) {
-                console.log("Unable to query. Error:", JSON.stringify(err, null, 2));
-                return null
-            }       
-            else {
-                return data.items
-            }
-        }).
-        */

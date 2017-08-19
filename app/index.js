@@ -42,10 +42,20 @@ function createInsertJSON (tableName, ISODate, currencyPair, value ) {
     }
   }
 }
+//
 
-var j= scheduler.scheduleJob("* * * * *", () => {
-var dTemp= new Date();
-var ISODate = new Date((dTemp).getTime() - (dTemp.getTimezoneOffset() * 60000)).toISOString();
+var cron=""
+if (process.argv.length <=3) {
+  cron="*/5 * * * *"
+}
+else {
+  cron=process.argv[2]
+}
+
+console.log("scheduling job for " +process.argv[2])
+var j= scheduler.scheduleJob(cron, () => {
+  var dTemp= new Date();
+  var ISODate = new Date((dTemp).getTime() - (dTemp.getTimezoneOffset() * 60000)).toISOString();
   console.log(dTemp.toLocaleString());
   processNewCurrencyPoint('BTC-USD', ISODate)
   processNewCurrencyPoint('ETH-USD', ISODate)
