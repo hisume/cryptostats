@@ -46,7 +46,7 @@ function createInsertJSON (tableName, ISODate, currencyPair, value ) {
 
 var cron=""
 if (process.argv.length <=3) {
-  cron="*/5 * * * *"
+  cron="* * * * *"
 }
 else {
   cron=process.argv[2]
